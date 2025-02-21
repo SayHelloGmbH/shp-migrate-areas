@@ -4,7 +4,9 @@
  * Plugin Name: Migrate Areas CLI
  * Description: Registers a WP-CLI command to migrate sht/accordion-block blocks into sht_areas posts.
  * Version: 1.0.0
- * Author: Mark Howells-Mead
+ * Author: Say Hello GmbH
+ * Author URI: https://sayhello.ch/
+ * Text Domain: shp-migrate-areas
  */
 
 namespace SayHello\Plugin\MigrateAreas;
