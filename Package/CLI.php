@@ -22,6 +22,7 @@ class CLI
 	{
 		\WP_CLI::add_command('sht migrate areas', [$this, 'migrateAreas']);
 		\WP_CLI::add_command('sht fix migrated areas', [$this, 'fixMigratedAreas']);
+		\WP_CLI::add_command('sht switch-language', [$this, 'switchLanguages']);
 	}
 
 	/**
@@ -143,6 +144,45 @@ class CLI
 			]);
 
 			echo "Updated post ID: {$post->ID}\n";
+		}
+	}
+
+	public function switchLanguages($args, $params)
+	{
+		$today = current_time('Y-m-d');
+		$cutoff = "$today 17:30:00";
+
+		$query = new WP_Query([
+			'post_type'      => 'sht_areas',
+			'post_status'    => 'publish',
+			'date_query'     => [
+				[
+					'after'     => $cutoff,
+					'inclusive' => false,
+				],
+			],
+			'orderby'        => 'date',
+			'order'          => 'DESC',
+			'posts_per_page' => -1,
+		]);
+
+		if ($query->have_posts()) {
+			foreach ($query->posts as $post) {
+
+				// switch WPML language to french
+				$language_args = [
+					'element_id' => $post->ID,
+					'element_type' => "post_{$post->post_type}",
+					'trid' => null,
+					'language_code' => 'fr',
+					'source_language_code' => null,
+				];
+				do_action('wpml_set_element_language_details', $language_args);
+
+				\WP_CLI::log("ID: {$post->ID} | {$post->post_title} | {$post->post_date} | UPDATED");
+			}
+		} else {
+			\WP_CLI::success('No posts found.');
 		}
 	}
 }

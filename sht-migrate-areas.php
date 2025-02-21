@@ -3,7 +3,7 @@
 /**
  * Plugin Name: Migrate Areas CLI
  * Description: Registers a WP-CLI command to migrate sht/accordion-block blocks into sht_areas posts.
- * Version: 1.0.0
+ * Version: 1.0.1
  * Author: Mark Howells-Mead
  */
 
